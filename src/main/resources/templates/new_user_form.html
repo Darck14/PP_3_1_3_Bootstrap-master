@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Admin page</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+
+<nav class="navbar bg-secondary navbar-expand-lg">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="container-fluid">
+        <div class="navbar-text text-light fs-5 ms-1">
+            <span class="fw-bolder " sec:authentication="name"></span>
+            <span class="fw-medium ">
+                with roles:
+                <span class="fw-medium" sec:authentication="principal.authorities"></span>
+            </span>
+        </div>
+        <div class="navbar-text">
+            <span class="fw-bolder">
+            <a class="nav-link text-black-50 fs-5" href="/logout">Logout</a>
+            </span>
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+    <nav class="col-1 p-3 nav flex-column nav-pills">
+        <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link active" aria-current="page" href="/admin">
+            Admin
+        </a>
+        <a class="nav-link" href="/user">
+            User
+        </a>
+    </nav>
+    <div class="col-2 offset-md-1 p-3">
+            <span class="fw-bolder">
+                <h1>
+                    Admin panel
+                </h1>
+            </span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/admin">Users table</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/new">New user</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+            <span class="fw-bolder">
+                <h4>
+                    Add new user
+                </h4>
+            </span>
+    </div>
+    <div class="row mb-3">
+        <form class="col-3 mx-auto" th:action="@{/admin}" th:object="${user}" method="post">
+            <div>
+                <label for="inputName" class="form-label">
+                    Name:
+                </label>
+                <input type="text" id="inputName" class="form-control" th:field="*{name}"/>
+            </div>
+            <div>
+                <label for="inputSername" class="form-label">
+                    Surname:
+                </label>
+                <input type="text" id="inputSername" class="form-control" th:field="*{sername}"/>
+            </div>
+            <div>
+                <label for="inputSex" class="form-label">
+                    Sex:
+                </label>
+                <input type="text" id="inputSex" class="form-control" th:field="*{sex}"/>
+            </div>
+            <div>
+                <label for="inputPassword" class="form-label">
+                    Password:
+                </label>
+                <input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock"
+                       th:field="*{password}"/>
+            </div>
+            <div>
+                <label for="inputRoles" class="form-label">
+                    Roles:
+                </label>
+                <input type="text" id="inputRoles" class="form-control" name="roleNames"/>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-success mt-3 offset-md-4 ">
+                    Add new user
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
