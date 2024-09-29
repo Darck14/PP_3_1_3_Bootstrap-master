@@ -100,10 +100,11 @@
                     </button>
                 </td>
                 <td>
-                    <a class="btn btn-danger" th:href="@{/admin/delete/{id}(id=${user.getId()})}"
-                       role="button">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#deleteUserModal"
+                            th:attr="data-id=${user.id}, data-name=${user.name}, data-sername=${user.sername}, data-sex=${user.sex}, data-roles=${user.roles}">
                         Delete
-                    </a>
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -120,36 +121,90 @@
             </div>
             <div class="modal-body">
                 <form id="editUserForm" method="post">
-                    <input type="hidden" name="id" id="userId">
+                    <input type="hidden" name="id" id="editUserId">
 
                     <div class="mb-3">
-                        <label for="userName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="userName" name="name">
+                        <label for="editUserName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="editUserName" name="name">
                     </div>
 
                     <div class="mb-3">
-                        <label for="userSername" class="form-label">Sername</label>
-                        <input type="text" class="form-control" id="userSername" name="sername">
+                        <label for="editUserSername" class="form-label">Sername</label>
+                        <input type="text" class="form-control" id="editUserSername" name="sername">
                     </div>
 
                     <div class="mb-3">
-                        <label for="userSex" class="form-label">Sex</label>
-                        <input type="text" class="form-control" id="userSex" name="sex">
+                        <label for="editUserSex" class="form-label">Sex</label>
+                        <input type="text" class="form-control" id="editUserSex" name="sex">
                     </div>
 
                     <div class="mb-3">
-                        <label for="userPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="userPassword" name="password">
+                        <label for="editUserPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="editUserPassword" name="password">
                     </div>
 
                     <div class="mb-3">
-                        <label for="userRoles" class="form-label">Roles</label>
-                        <input class="form-control" id="userRoles" name="roleNames">
+                        <label for="editUserRoles" class="form-label">Roles</label>
+                        <select class="form-select" id="editUserRoles" name="roleNames">
+                            <option value="ROLE_USER">Пользователь</option>
+                            <option value="ROLE_ADMIN">Администратор</option>
+                        </select>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel">Delete user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteUserForm" method="post">
+                    <fieldset disabled>
+                        <label for="deleteUserId" class="form-label">Id</label>
+                        <input type="text" class="form-control " name="id" id="deleteUserId">
+
+                        <div class="mb-3">
+                            <label for="deleteUserName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="deleteUserName" name="name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deleteUserSername" class="form-label">Sername</label>
+                            <input type="text" class="form-control " id="deleteUserSername" name="sername">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deleteUserSex" class="form-label">Sex</label>
+                            <input type="text" class="form-control " id="deleteUserSex" name="sex">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deleteUserPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control " id="deleteUserPassword" name="password">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deleteUserRoles" class="form-label">Roles</label>
+                            <select class="form-select " id="deleteUserRoles" name="roles" multiple>
+                                <option value="ROLE_USER">Пользователь</option>
+                                <option value="ROLE_ADMIN">Администратор</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </div>
                 </form>
             </div>
@@ -159,7 +214,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var editButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+        var editButtons = document.querySelectorAll('[data-bs-target="#editUserModal"]');
 
         editButtons.forEach(function (button) {
             button.addEventListener('click', function () {
@@ -169,13 +224,37 @@
                 var userSername = this.getAttribute('data-sername');
                 var userSex = this.getAttribute('data-sex');
 
-                document.getElementById('userId').value = userId;
-                document.getElementById('userName').value = userName;
-                document.getElementById('userSername').value = userSername;
-                document.getElementById('userSex').value = userSex;
+                document.getElementById('editUserId').value = userId;
+                document.getElementById('editUserName').value = userName;
+                document.getElementById('editUserSername').value = userSername;
+                document.getElementById('editUserSex').value = userSex;
 
 
                 document.getElementById('editUserForm').action = '/admin/' + userId;
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var deleteButtons = document.querySelectorAll('[data-bs-target="#deleteUserModal"]');
+
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+
+                var userId = this.getAttribute('data-id');
+                var userName = this.getAttribute('data-name');
+                var userSername = this.getAttribute('data-sername');
+                var userSex = this.getAttribute('data-sex');
+
+                document.getElementById('deleteUserId').value = userId;
+                document.getElementById('deleteUserName').value = userName;
+                document.getElementById('deleteUserSername').value = userSername;
+                document.getElementById('deleteUserSex').value = userSex;
+
+
+                document.getElementById('deleteUserForm').action = '/admin/delete/' + userId;
             });
         });
     });
