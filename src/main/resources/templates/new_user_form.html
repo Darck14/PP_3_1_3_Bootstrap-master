@@ -98,10 +98,11 @@
                        th:field="*{password}"/>
             </div>
             <div>
-                <label for="inputRoles" class="form-label">
-                    Roles:
-                </label>
-                <input type="text" id="inputRoles" class="form-control" name="roleNames"/>
+                <label for="inputRoles" class="form-label">Roles :</label>
+                <select class="form-select" id="inputRoles" name="roleNames" multiple>
+                    <option value="ROLE_USER">Пользователь</option>
+                    <option value="ROLE_ADMIN">Администратор</option>
+                </select>
             </div>
             <div>
                 <button type="submit" class="btn btn-success mt-3 offset-md-4 ">
