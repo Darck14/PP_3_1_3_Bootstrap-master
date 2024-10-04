@@ -27,6 +27,7 @@ public class AdminController {
     @GetMapping
     public String showAllUsers(Model model) {
         model.addAttribute("users",userService.listUsers());
+        model.addAttribute("roles", roleService.listRoles());
         return "admin_page";
     }
 
@@ -34,6 +35,7 @@ public class AdminController {
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("roles", roleService.listRoles());
         return "new_user_form";
     }
 
