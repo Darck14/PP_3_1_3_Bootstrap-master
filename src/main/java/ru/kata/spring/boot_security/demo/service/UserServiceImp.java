@@ -46,7 +46,9 @@ public class UserServiceImp  implements UserService {
     @Transactional
     @Override
     public void update(User user) {
-        if (passwordEncoder.matches(user.getPassword(), userRepository.findById(user.getId()).get().getPassword())) {
+        if (passwordEncoder.matches(user.getPassword(), userRepository.findById(user.getId()).get().getPassword()) ||
+        user.getPassword().isEmpty()) {
+            user.setPassword(userRepository.findById(user.getId()).get().getPassword());
             userRepository.save(user);
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
